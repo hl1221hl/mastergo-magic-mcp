@@ -6,6 +6,19 @@ axios.defaults.httpsAgent = new https.Agent({
   rejectUnauthorized: false,
 });
 
+const DEFAULT_API_TIMEOUT_MS = 180000;
+
+const parseApiTimeoutMs = (): number => {
+  const rawTimeout = process.env.API_TIMEOUT_MS;
+  const parsedTimeout = rawTimeout ? Number(rawTimeout) : DEFAULT_API_TIMEOUT_MS;
+
+  return Number.isFinite(parsedTimeout) && parsedTimeout > 0
+    ? parsedTimeout
+    : DEFAULT_API_TIMEOUT_MS;
+};
+
+export const API_TIMEOUT_MS = parseApiTimeoutMs();
+
 // DSL response interface
 export interface DslResponse {
   [key: string]: any;
@@ -91,7 +104,7 @@ const createHttpUtil = () => {
   return {
     async getMeta(fileId: string, layerId: string, sourceLayerId?: string): Promise<string> {
       const response = await axios.get(`${getBaseUrl()}/mcp/meta`, {
-        timeout: 30000,
+        timeout: API_TIMEOUT_MS,
         params: { fileId, layerId, ...(sourceLayerId ? { sourceLayerId } : {}) },
         headers: getCommonHeader(),
       });
@@ -100,7 +113,7 @@ const createHttpUtil = () => {
 
     async getDsl(fileId: string, layerId: string, sourceLayerId?: string): Promise<DslResponse> {
       const response = await axios.get(`${getBaseUrl()}/mcp/dsl`, {
-        timeout: 30000,
+        timeout: API_TIMEOUT_MS,
         params: { fileId, layerId, ...(sourceLayerId ? { sourceLayerId } : {}) },
         headers: getCommonHeader(),
       });
@@ -115,7 +128,7 @@ const createHttpUtil = () => {
     async getD2c(contentId: string,documentId: string): Promise<DslResponse> {
       const params: Record<string, any> = { contentId: contentId, documentId: documentId };
       const response = await axios.get(`${getBaseUrl()}/mcp/d2c/events`, {
-        timeout: 30000,
+        timeout: API_TIMEOUT_MS,
         params,
         headers: getCommonHeader(),
       });
@@ -132,7 +145,7 @@ const createHttpUtil = () => {
         `${getBaseUrl()}/mcp/c2d`,
         { data, fileId, layerId },
         {
-          timeout: 30000,
+          timeout: API_TIMEOUT_MS,
           headers: getCommonHeader(),
         }
       );
@@ -141,7 +154,7 @@ const createHttpUtil = () => {
 
     async getComponentStyleJson(fileId: string, layerId: string, sourceLayerId?: string) {
       const response = await axios.get(`${getBaseUrl()}/mcp/style`, {
-        timeout: 30000,
+        timeout: API_TIMEOUT_MS,
         params: { fileId, layerId, ...(sourceLayerId ? { sourceLayerId } : {}) },
         headers: getCommonHeader(),
       });

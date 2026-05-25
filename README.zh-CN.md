@@ -62,6 +62,7 @@ npx @mastergo/magic-mcp --token YOUR_TOKEN --url API_URL --rule RULE_NAME --debu
 
 - `MG_MCP_TOKEN` 或 `MASTERGO_API_TOKEN`: MasterGo API 令牌
 - `API_BASE_URL`: API 基础 URL
+- `API_TIMEOUT_MS`: HTTP 请求超时时间（毫秒），默认 180000
 - `RULES`: 规则的 JSON 数组 (例如: `'["rule1", "rule2"]'`)
 
 ### 通过 Smithery 市场安装

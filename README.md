@@ -62,6 +62,7 @@ Alternatively, you can use environment variables instead of command line argumen
 
 - `MG_MCP_TOKEN` or `MASTERGO_API_TOKEN`: MasterGo API token
 - `API_BASE_URL`: API base URL
+- `API_TIMEOUT_MS`: HTTP request timeout in milliseconds, defaults to 180000
 - `RULES`: JSON array of rules (e.g., `'["rule1", "rule2"]'`)
 
 ### Installing via Smithery Marketplace

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { BaseTool } from "./base-tool";
-import { httpUtilInstance } from "../utils/api";
+import { API_TIMEOUT_MS, httpUtilInstance } from "../utils/api";
 import axios from "axios";
 import path from "path";
 import { existsSync, mkdirSync } from "fs";
@@ -121,7 +121,7 @@ async function writeResource(
           try {
             const response = await axios.get(content, {
               responseType: "arraybuffer",
-              timeout: 30000,
+              timeout: API_TIMEOUT_MS,
             });
             await writeFile(filePath, response.data);
             successCount += 1;
@@ -137,7 +137,7 @@ async function writeResource(
               const httpUrl = content.replace(/^https:\/\//, "http://");
               const response = await axios.get(httpUrl, {
                 responseType: "arraybuffer",
-                timeout: 30000,
+                timeout: API_TIMEOUT_MS,
               });
               await writeFile(filePath, response.data);
               successCount += 1;
